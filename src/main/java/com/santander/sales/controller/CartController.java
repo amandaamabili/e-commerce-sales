@@ -44,4 +44,13 @@ public class CartController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @DeleteMapping("/user/{userID}")
+    ResponseEntity<Object> delete(@PathVariable String userID) {
+        try {
+            return ResponseEntity.ok(cartService.delete(userID));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

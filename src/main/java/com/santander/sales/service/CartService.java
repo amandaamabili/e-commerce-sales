@@ -29,6 +29,7 @@ public class CartService implements CartServiceInterface {
     @Override
     public CartDTO update(String userID, ProductDTO dto) {
         var cart = cartRepository.findByUserID(userID).orElseThrow(() -> new UserCartNotFoundException(userID));
+
         cart.updateProductList(dto);
         return new CartDTO(cartRepository.save(cart));
     }
@@ -36,6 +37,13 @@ public class CartService implements CartServiceInterface {
     @Override
     public CartDTO get(String cartID) {
         var cart = cartRepository.findById(cartID).orElseThrow(() -> new UserCartNotFoundException(cartID));
+        return new CartDTO(cart);
+    }
+
+    @Override
+    public CartDTO delete(String userID) {
+        var cart = cartRepository.findByUserID(userID).orElseThrow(() -> new UserCartNotFoundException(userID));
+        cartRepository.delete(cart);
         return new CartDTO(cart);
     }
 }

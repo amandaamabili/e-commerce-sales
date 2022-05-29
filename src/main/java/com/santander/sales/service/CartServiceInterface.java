@@ -10,4 +10,7 @@ public interface CartServiceInterface {
     CartDTO update(String userID, ProductDTO dto);
 
     CartDTO get(String cartID);
+
+    CartDTO delete(String userID);
+
 }
