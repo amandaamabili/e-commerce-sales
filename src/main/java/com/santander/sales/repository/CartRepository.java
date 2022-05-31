@@ -2,11 +2,10 @@ package com.santander.sales.repository;
 
 
 import com.santander.sales.model.Cart;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import reactor.core.publisher.Mono;
 
-import java.util.Optional;
+public interface CartRepository extends ReactiveMongoRepository<Cart, String> {
 
-public interface CartRepository extends MongoRepository<Cart, String> {
-
-    Optional<Cart> findByUserID(String userID);
+    Mono<Cart> findByUserID(String userID);
 }

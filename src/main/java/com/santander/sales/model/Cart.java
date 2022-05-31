@@ -22,7 +22,6 @@ public class Cart {
     @Field
     private double totalPrice;
 
-
     public Cart(String userID) {
         this.userID = userID;
         this.productMap = new HashMap<>();

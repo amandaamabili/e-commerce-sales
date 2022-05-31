@@ -1,13 +1,12 @@
 package com.santander.sales.service;
 
-import com.santander.sales.dto.CartDTO;
 import com.santander.sales.dto.ProductDTO;
+import com.santander.sales.model.Cart;
+import reactor.core.publisher.Mono;
 
 public interface CartServiceInterface {
 
-    CartDTO create(String userID);
-
-    CartDTO update(String userID, ProductDTO dto);
-
-    CartDTO get(String cartID);
+    Mono<Cart> create(String userID);
+    Mono<Cart> get(String userID);
+    Mono<Cart> update(String userID, ProductDTO dto);
 }
