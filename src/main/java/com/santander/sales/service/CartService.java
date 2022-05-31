@@ -1,12 +1,11 @@
 package com.santander.sales.service;
 
-import com.santander.sales.dto.CartDTO;
 import com.santander.sales.dto.ProductDTO;
 import com.santander.sales.exception.UserCartNotFoundException;
-import com.santander.sales.exception.UserHasAlreadyCartException;
 import com.santander.sales.model.Cart;
 import com.santander.sales.repository.CartRepository;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 @Service
 public class CartService implements CartServiceInterface {
@@ -18,24 +17,23 @@ public class CartService implements CartServiceInterface {
     }
 
     @Override
-    public CartDTO create(String userID) {
-        if (cartRepository.findByUserID(userID).isPresent()) {
-            throw new UserHasAlreadyCartException();
-        }
-        var cartSaved = cartRepository.save(new Cart(userID));
-        return new CartDTO(cartSaved);
+    public Mono<Cart> create(String userID) {
+        return cartRepository.findByUserID(userID)
+                .switchIfEmpty(cartRepository.save(new Cart(userID)));
     }
 
     @Override
-    public CartDTO update(String userID, ProductDTO dto) {
-        var cart = cartRepository.findByUserID(userID).orElseThrow(() -> new UserCartNotFoundException(userID));
-        cart.updateProductList(dto);
-        return new CartDTO(cartRepository.save(cart));
+    public Mono<Cart> update(String userID, ProductDTO dto) {
+        return cartRepository
+                .findByUserID(userID)
+                .flatMap(cart -> {
+                    cart.updateProductList(dto);
+                    return cartRepository.save(cart);
+                })
+                .switchIfEmpty(Mono.error(new UserCartNotFoundException(userID)));
     }
-
     @Override
-    public CartDTO get(String cartID) {
-        var cart = cartRepository.findById(cartID).orElseThrow(() -> new UserCartNotFoundException(cartID));
-        return new CartDTO(cart);
+    public Mono<Cart> get(String cartID) {
+        return cartRepository.findById(cartID);
     }
 }

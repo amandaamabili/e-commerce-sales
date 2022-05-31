@@ -5,7 +5,6 @@ import com.santander.sales.dto.ProductDTO;
 import com.santander.sales.exception.UserCartNotFoundException;
 import com.santander.sales.exception.UserHasAlreadyCartException;
 import com.santander.sales.model.Cart;
-import com.santander.sales.repository.CartRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
