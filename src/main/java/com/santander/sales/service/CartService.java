@@ -33,7 +33,7 @@ public class CartService implements CartServiceInterface {
                 .switchIfEmpty(Mono.error(new UserCartNotFoundException(userID)));
     }
     @Override
-    public Mono<Cart> get(String cartID) {
-        return cartRepository.findById(cartID);
+    public Mono<Cart> getByUser(String cartID) {
+        return cartRepository.findByUserID(cartID);
     }
 }

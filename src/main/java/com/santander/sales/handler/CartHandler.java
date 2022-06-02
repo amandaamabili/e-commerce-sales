@@ -18,7 +18,7 @@ public class CartHandler {
 
     public Mono<ServerResponse> getByUser(ServerRequest request) {
         return Mono.just(request.pathVariable("userID"))
-                .flatMap(cartService::get)
+                .flatMap(cartService::getByUser)
                 .flatMap(cart -> ServerResponse.ok().bodyValue(cart))
                 .switchIfEmpty(ServerResponse.unprocessableEntity().bodyValue("Invalid user. Check data imput."));
     }
@@ -38,6 +38,5 @@ public class CartHandler {
                 .flatMap(cart -> ServerResponse.ok().bodyValue(cart))
                 .onErrorResume(e -> ServerResponse.notFound().build());
     }
-
 }
 
