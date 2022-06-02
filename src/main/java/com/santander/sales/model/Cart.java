@@ -6,7 +6,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -26,6 +28,15 @@ public class Cart {
         this.userID = userID;
         this.productMap = new HashMap<>();
         this.totalPrice = 0;
+    }
+
+    public Cart clone() {
+        Cart temp = new Cart(this.userID);
+
+        temp._id= this.get_id();
+        temp.productMap = this.getProductMap();
+        temp.totalPrice = this.getTotalPrice();
+        return  temp;
     }
 
     public void updateProductList(ProductDTO dto) {
@@ -55,5 +66,11 @@ public class Cart {
                 .stream()
                 .map(product -> product.getPrice() * product.getAmount())
                 .reduce(0.0, Double::sum);
+    }
+
+    public List<Product> mapToProductList(){
+        return new ArrayList<>(this
+                .getProductMap()
+                .values());
     }
 }
